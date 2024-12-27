@@ -1,16 +1,20 @@
-# This is a sample Python script.
+import yfinance as yf
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
 
-# Press ⌃F5 to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+def get_data(tickers,start_date,end_date):
+    data ={}
+    for ticker in tickers:
+        try:
+            df = pd.read_csv(f"./data/{ticker}.csv",index_col=0,parse_dates=True)
+            data[ticker] = df
+        except Exception as e:
+            print(f"Error:{e}")
 
+            df = yf.download(ticker,start=start_date,end=end_date)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    tickers = ["AAPL","MSFT","GOOG"]
+    start_date = "2019-01-01"
+    end_date = "2021-01-01"
